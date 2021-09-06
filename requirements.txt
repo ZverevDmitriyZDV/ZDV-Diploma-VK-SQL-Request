@@ -1,0 +1,4 @@
+DateTime==4.3
+pprintpp==0.4.0
+SQLAlchemy==1.4.23
+vk-api==11.9.4

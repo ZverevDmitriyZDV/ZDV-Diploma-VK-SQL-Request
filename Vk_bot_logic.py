@@ -1,9 +1,8 @@
 import vk_api
 import datetime
-from pprint import pprint
 from random import randrange
 from SQl_table_fill import SqlDataPersons
-from user_data import user_id, token_user, sql_name
+from settings import sql_name
 
 
 class VkLoveSearcher:
@@ -100,6 +99,7 @@ class VkLoveSearcher:
         extra_data = 'bdate,city,country,sex,occupation,relation'
         self.person_city_id_by_name = self.vk.method('database.getCities', {'country_id': 1, 'q': city})['items'][0][
             'id']
+        print('city_id=',self.person_city_id_by_name)
         data = {'count': limit,
                 'fields': extra_data,
                 'city': self.person_city_id_by_name,
@@ -190,15 +190,5 @@ class VkLoveSearcher:
         return self.database.get_three_users()
 
 
-if __name__ == '__main__':
-    user1 = VkLoveSearcher(token_user, user_id_num=user_id)
-    pprint(user1.user_data)
-    user1.find_persons()
-    # user1.find_persons(sex='жен', age=27, status='холост', city='Москва')
-
-    pprint(user1.request_data)
-    user1.give_me_three_person()
-    user1.give_me_three_person()
-    user1.give_me_three_person()
 
 

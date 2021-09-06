@@ -1,13 +1,13 @@
 import sqlalchemy
 from sqlalchemy import MetaData, Table
-from SQL_test_data import user_data_dict, tula_data_list
 from pprint import pprint
 
 
 class SqlDataPersons:
     def __init__(self, sql_name_database, user_data=None, person_data=None):
-        self.user_data = user_data if user_data is not None else None
-        self.person_data = person_data if person_data is not None else None
+        self.user_data = user_data
+        self.person_data = person_data
+        self.person_city_needed = None
         self.engine = sqlalchemy.create_engine(sql_name_database)
         self.connection = self.engine.connect()
         self.metadata = MetaData(self.connection)
@@ -62,7 +62,8 @@ class SqlDataPersons:
     def _get_without_relation(self):
 
         return self.connection.execute(f'''SELECT * FROM person
-                                            WHERE id NOT IN ({self._convert_to_line()})                                    
+                                            WHERE id NOT IN ({self._convert_to_line()}) 
+                                            AND city ='{self.person_city_needed}' 
                                 ''').fetchall()
 
     def _convert_to_template(self, list_output):
@@ -142,26 +143,6 @@ class SqlDataPersons:
         result_request = self.connection.execute(f'''SELECT * FROM person
                                                     WHERE {data_str}
                                          ''').fetchall()
+        self.person_city_needed = data_for_sql['city']
 
         return self._convert_to_template(result_request)
-
-
-if __name__ == '__main__':
-    sql_name = 'postgresql://vk_user:vk_user@localhost:5432/vk_database_users'
-    database1 = SqlDataPersons(sql_name, user_data=user_data_dict, person_data=tula_data_list)
-    database1.fill_user_data()
-    database1.fill_person_data()
-
-    # database1._purge('usersconnect')
-    # database1.fill_relation(139430839)
-    # database1.fill_relation(226648896)
-    # database1.get_three_users()
-
-    data_for_sql = dict(
-        city='Тула',
-        sex=1,
-        relation=6,
-        age_from=23,
-        age_to=24
-    )
-    pprint(database1.get_existed_by_request(data_for_sql))

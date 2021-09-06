@@ -5,7 +5,7 @@ from datetime import datetime
 import time
 import re
 from Vk_bot_logic import VkLoveSearcher
-from user_data import token, bot_id
+from settings import token, bot_id
 
 
 class VkBotLovers:
