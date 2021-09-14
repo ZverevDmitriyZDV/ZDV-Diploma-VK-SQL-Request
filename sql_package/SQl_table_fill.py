@@ -1,10 +1,12 @@
 import sqlalchemy
 from sqlalchemy import MetaData, Table
 from pprint import pprint
+from SQL_db_creator import create_db
 
 
 class SqlDataPersons:
     def __init__(self, sql_name_database, user_data=None, person_data=None):
+        create_db(sql_name_database)
         self.user_data = user_data
         self.person_data = person_data
         self.person_city_needed = None
