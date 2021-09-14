@@ -49,7 +49,7 @@
         * Создать БД в приложении
         * Создать пользователя с правами записи в эту БД.
         * Передать данные ключа и пароля использования БД в файл settings.py в значение sql_name. Подробнее смотри ниже
-        * БД и таблицы будут созданы автоматически
+        * В соответствии с кодом из файла: sql_database_template.sql создать таблицы и взаимосвязи. Подробнее смотри ниже
     * В приложении Vk.com получить токен для бота:
         * рекомендуется создать новую vk группу для пробного теста
         * в Настройках сообщества выбрать пункт Работа с API, далее в закладке Ключи доступа, необходимо нажать Создать ключ
@@ -82,6 +82,38 @@ https://vk.com/editapp?id=0000000&section=info
 
 ![схема БД]](https://github.com/ZverevDmitriyZDV/DIPLOME-2/blob/main/%D0%91%D0%94%20%D1%81%D1%85%D0%B5%D0%BC%D0%B0.PNG)
 
+
+####Код необходимый для создания соответсвующей структуры БД
+```shell
+CREATE TABLE IF NOT EXISTS Client(
+	Id INTEGER NOT NULL UNIQUE,
+	LastName VARCHAR(60) NOT NULL,
+	FirstName VARCHAR(60) NOT NULL,
+	PersonUrl VARCHAR(60) NOT NULL,
+	Age INTEGER NOT NULL,
+	Sex INTEGER NOT NULL,
+	City VARCHAR(60) NOT NULL,
+	Relation INTEGER NOT NULL,
+	PhotosUrl TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Person(
+	Id INTEGER NOT NULL UNIQUE,
+	LastName VARCHAR(60) NOT NULL,
+	FirstName VARCHAR(60) NOT NULL,
+	PersonUrl VARCHAR(60) NOT NULL,
+	Age INTEGER NOT NULL,
+	Sex INTEGER NOT NULL,
+	City VARCHAR(60) NOT NULL,
+	Relation INTEGER NOT NULL,
+	PhotosUrl TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS UsersConnect(
+	ClientId INTEGER REFERENCES Client(Id) NOT NULL,
+	PersonId INTEGER REFERENCES Person(Id) NOT NULL
+);	
+```
 
 
 
